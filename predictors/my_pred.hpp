@@ -45,7 +45,7 @@ struct my_pred : predictor {
         global_index = get_global_index(inst_pc);
         global_t = global_bht.read(global_index);
 
-        // chooser_index = get_index(inst_pc); --> gain minus 50fJ
+        // chooser_index = get_index(inst_pc); --> gain minus 50fJ on 12 bit LOG
         choice = chooser.read(index);
         return select(val<1>{choice >> 1}, global_t >> 1, t >> 1);  // 0 -> local; 1 --> global
     }
@@ -62,16 +62,14 @@ struct my_pred : predictor {
 
     void update_condbr([[maybe_unused]] val<64> branch_pc, [[maybe_unused]] val<1> taken, [[maybe_unused]] val<64> next_pc) {
         val<2> new_t = update_t(t, taken);
-        val<1> update_local = val<1>{new_t != t};
+        val<1> update_local = new_t != t;
 
         val<2> new_global_t = update_t(global_t, taken);
-        val<1> update_global = val<1>{new_global_t != global_t};
+        val<1> update_global = new_global_t != global_t;
 
-        val<1> global_was_taken = val<1>{new_global_t >> 1} == taken;
-
+        val<1> global_was_taken = val<1>{global_t >> 1} == taken;
         val<2> new_choice = update_t(choice, global_was_taken);
-        val<1> update_chooser = (new_t >> 1) != (new_global_t >> 1);
-        // ferma qua
+        val<1> update_chooser = (t >> 1) != (global_t >> 1);
 
         need_extra_cycle(update_local | update_global | update_chooser);
         execute_if(update_local, [&]() {
