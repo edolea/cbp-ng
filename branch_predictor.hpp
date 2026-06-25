@@ -11,6 +11,7 @@
 #include "predictors/tutorial/tutorial.hpp"
 
 #include "predictors/my_pred.hpp"
+#include "predictors/my_pred_tage.hpp"
 
 #ifdef PREDICTOR
 using branch_predictor = PREDICTOR;

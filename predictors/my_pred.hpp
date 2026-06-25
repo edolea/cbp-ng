@@ -1,17 +1,21 @@
 ﻿#include "../cbp.hpp"
 #include "../harcom.hpp"
+#include "common.hpp"   // update_ctr, geometric_folds, ... (shared helpers)
 
 using namespace hcm;
 
 template<u64 LOG_TABLE = 12, u64 HIST = 12>
-struct my_pred : predictor {
+struct my_pred_tage : predictor {
     // TODO: see if u can add .fo1 to pc_branch, to t_update function, ...
     // static_assert(HIST <= LOG_TABLE);
     static constexpr u64 TABLE = 1 << LOG_TABLE;
 
+    // --- base predictor: bimodal, indexed by PC only (drives the fast P1) ---
     ram<val<2>, TABLE> bht;
+    // --- override predictor: gshare, indexed by PC ^ global history ---
     ram<val<2>, TABLE> global_bht;
     reg<HIST> global_history;
+    // --- combiner: 2-bit chooser (TO BE REPLACED by tag matching in Step 2) ---
     ram<val<2>, TABLE> chooser;
 
     reg<2> t;
@@ -54,21 +58,17 @@ struct my_pred : predictor {
         return hard<0>{};
     }
 
-    val<2> update_t(val<2> old_t, val<1> taken) {
-        val<2> increased = select(old_t == 3, old_t, val<2>{old_t + 1});
-        val<2> decreased = select(old_t == 0, old_t, val<2>{old_t - 1});
-        return select(taken, increased, decreased);
-    }
-
     void update_condbr([[maybe_unused]] val<64> branch_pc, [[maybe_unused]] val<1> taken, [[maybe_unused]] val<64> next_pc) {
-        val<2> new_t = update_t(t, taken);
+        // update_ctr (from common.hpp) is the shared up/down saturating counter:
+        // same behavior as the old hand-rolled update_t for 2-bit counters.
+        val<2> new_t = update_ctr(t, taken);
         val<1> update_local = new_t != t;
 
-        val<2> new_global_t = update_t(global_t, taken);
+        val<2> new_global_t = update_ctr(global_t, taken);
         val<1> update_global = new_global_t != global_t;
 
         val<1> global_was_taken = val<1>{global_t >> 1} == taken;
-        val<2> new_choice = update_t(choice, global_was_taken);
+        val<2> new_choice = update_ctr(choice, global_was_taken);
         val<1> update_chooser = (t >> 1) != (global_t >> 1);
 
         need_extra_cycle(update_local | update_global | update_chooser);
