@@ -15,11 +15,11 @@ for a in "$@"; do
   esac
 done
 
-BHT_START=10
+BHT_START=12
 BHT_END=14
-SHORT_H_START=3
-SHORT_H_END=6
-H_START=10
+SHORT_H_START=12
+SHORT_H_END=14
+H_START=12
 H_END=16
 
 outdir="OUTPUT"
@@ -40,7 +40,7 @@ fi
 for ((n=BHT_START; n<=BHT_END; n++)); do
   for ((m=SHORT_H_START; m<=SHORT_H_END; m++)); do
     for ((k=H_START; k<=H_END; k++)); do
-      cmd=("./compile" "cbp" "-DPREDICTOR=my_pred<${n},${m},${k}>")
+      cmd=("./compile" "cbp" "-DPREDICTOR=my_pred_tage<${n},${m},${k}>")
       echo "=== [${n},${m},${k}] ${cmd[*]}"
       if ! $DRY_RUN; then
         "${cmd[@]}"

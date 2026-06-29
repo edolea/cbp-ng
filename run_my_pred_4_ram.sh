@@ -15,19 +15,19 @@ for a in "$@"; do
   esac
 done
 
-BHT_START=10
-BHT_END=14
-SHORT_H_START=3
-SHORT_H_END=6
-H_START=10
+BHT_START=13
+BHT_END=16
+SHORT_H_START=12
+SHORT_H_END=16
+H_START=12
 H_END=16
-L_START=1
-L_END=3
+L_START=10
+L_END=20
 
 outdir="OUTPUT"
 outfile="$outdir/all_outputs.txt"
 
-echo "Running ./compile cbp -DPREDICTOR=\"my_pred<...,...,...,...>\" for n values $BHT_START..$BHT_END, m values $SHORT_H_START..$SHORT_H_END, k values $H_START..$H_END and l values $L_START..$L_END"
+echo "Running ./compile cbp -DPREDICTOR=\"my_pred_tage_2<...,...,...,...>\" for n values $BHT_START..$BHT_END, m values $SHORT_H_START..$SHORT_H_END, k values $H_START..$H_END and l values $L_START..$L_END"
 if $DRY_RUN; then
   echo "(dry run — commands will only be printed)"
   echo "All outputs would be appended to: $outfile"
@@ -43,7 +43,7 @@ for ((n=BHT_START; n<=BHT_END; n++)); do
   for ((m=SHORT_H_START; m<=SHORT_H_END; m++)); do
     for ((k=H_START; k<=H_END; k++)); do
       for ((l=L_START; l<=L_END; l++)); do
-        cmd=("./compile" "cbp" "-DPREDICTOR=my_pred<${n},${m},${k},${l}>")
+        cmd=("./compile" "cbp" "-DPREDICTOR=my_pred_tage_phase2<${n},${m},${k},${l}>")
         echo "=== [${n},${m},${k},${l}] ${cmd[*]}"
         if ! $DRY_RUN; then
           "${cmd[@]}"
@@ -56,10 +56,10 @@ for ((n=BHT_START; n<=BHT_END; n++)); do
 
         # After successful compile, run the binary on the test trace
         run_cmd=("./cbp" "./gcc_test_trace.gz" test 1000000 40000000)
-        echo "    -> ${run_cmd[*]}  | sed 's/^/my_pred<${n},${m},${k},${l}>: /' >> ${outfile}  (appending)"
+        echo "    -> ${run_cmd[*]}  | sed 's/^/my_pred_tage_2<${n},${m},${k},${l}>: /' >> ${outfile}  (appending)"
         if ! $DRY_RUN; then
           # run and append both stdout and stderr, prefixing each line with identifier
-          "${run_cmd[@]}" 2>&1 | sed "s/^/my_pred<${n},${m},${k},${l}>: /" >> "$outfile"
+          "${run_cmd[@]}" 2>&1 | sed "s/^/my_pred_2<${n},${m},${k},${l}>: /" >> "$outfile"
           rc=$?
           if (( rc != 0 )); then
             echo "Run command failed with status $rc; aborting." >&2

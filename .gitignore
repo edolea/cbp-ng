@@ -1,2 +1,8 @@
-/OUTPUT
 .idea
+.DS_Store
+
+/OUTPUT
+cbp
+compile_commands.json
+tage_plan.md
+all_results_format-human

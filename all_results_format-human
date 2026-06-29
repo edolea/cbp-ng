@@ -1,0 +1,184 @@
+** always_taken
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 396599
+extra_cycles            : 0
+short mispredictions    : 0
+block-ending short misp : 0
+mispredictions          : 146020
+p1 latency              : 0 cycles
+p2 latency              : 0 cycles
+energy per instruction  : 0 fJ
+
+** never_taken
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 250579
+extra_cycles            : 0
+short mispredictions    : 0
+block-ending short misp : 0
+mispredictions          : 188525
+p1 latency              : 0 cycles
+p2 latency              : 0 cycles
+energy per instruction  : 0 fJ
+
+** bimodal
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 378369
+extra_cycles            : 41171
+short mispredictions    : 9787
+block-ending short misp : 6277
+mispredictions          : 31652
+p1 latency              : 0.54 cycles
+p2 latency              : 0.957 cycles
+energy per instruction  : 719 fJ
+
+** bimodalN
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 269759
+extra_cycles            : 31365
+short mispredictions    : 0
+block-ending short misp : 0
+mispredictions          : 31365
+p1 latency              : 0.99 cycles
+p2 latency              : 0.99 cycles
+energy per instruction  : 70 fJ
+
+** gshare
+
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 371929
+extra_cycles            : 29674
+short mispredictions    : 8536
+block-ending short misp : 5339
+mispredictions          : 21515
+p1 latency              : 0.903 cycles
+p2 latency              : 1.16 cycles
+energy per instruction  : 807 fJ
+
+** gshareN
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 285370
+extra_cycles            : 23311
+short mispredictions    : 0
+block-ending short misp : 0
+mispredictions          : 23311
+p1 latency              : 0.963 cycles
+p2 latency              : 0.963 cycles
+energy per instruction  : 84 fJ
+
+** gshareN_ahead
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 259188
+extra_cycles            : 21012
+short mispredictions    : 0
+block-ending short misp : 0
+mispredictions          : 21012
+p1 latency              : 0.943 cycles
+p2 latency              : 0.943 cycles
+energy per instruction  : 306 fJ
+
+** perceptron
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 263412
+extra_cycles            : 42493
+short mispredictions    : 179617
+block-ending short misp : 179617
+mispredictions          : 18526
+p1 latency              : 0 cycles
+p2 latency              : 1.85 cycles
+energy per instruction  : 790 fJ
+
+** hashed_perceptron
+(base) edoardo@MacBook-Pro-di-Edoardo aca_proj % ./cbp ./gcc_test_trace.gz test 1000000 40000000 --format human
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 368729
+extra_cycles            : 39844
+short mispredictions    : 17905
+block-ending short misp : 8927
+mispredictions          : 13635
+p1 latency              : 0.887 cycles
+p2 latency              : 2 cycles
+energy per instruction  : 2289 fJ
+
+** tage
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 367953
+extra_cycles            : 32744
+short mispredictions    : 20180
+block-ending short misp : 9895
+mispredictions          : 12333
+p1 latency              : 0.937 cycles
+p2 latency              : 1.86 cycles
+energy per instruction  : 1542 fJ
+
+** fra (2 bank)
+(base) edoardo@MacBook-Pro-di-Edoardo aca_proj % ./cbp ./gcc_test_trace.gz test 1000000 40000000 --format human
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 456544
+extra_cycles            : 301177
+short mispredictions    : 70950
+block-ending short misp : 19404
+mispredictions          : 188525
+p1 latency              : 0.68 cycles
+p2 latency              : 0.657 cycles
+energy per instruction  : 147 fJ
+
+** tutorial 02
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 2004999
+extra_cycles            : 55869
+short mispredictions    : 0
+block-ending short misp : 0
+mispredictions          : 33864
+p1 latency              : 0.407 cycles
+p2 latency              : 0.42 cycles
+energy per instruction  : 32 fJ
+
+** codex 1 global ram <--> mine 2 ram (both 12 bit LOG)
+trace                   : test
+instructions            : 2004999
+branches                : 396599
+conditional branches    : 334545
+predictions             : 2004999
+extra_cycles            : 43954 -- 68k
+short mispredictions    : 0 -- 16k
+block-ending short misp : 0 -- 16k
+mispredictions          : 26285  <--> 24757
+p1 latency              : 0.647 cycles -- 0.733
+p2 latency              : 0.66 cycles --- 0.703
+energy per instruction  : 164 fJ <--> 379 fJ
